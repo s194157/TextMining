@@ -21,7 +21,7 @@ dir.create(workspaceDir, showWarnings = FALSE)
 corpusDir <- paste(
   inputDir,
   "\\",
-  "Literatura - streszczenia - orygina³",
+  "Literatura - streszczenia - orygina?",
   sep = ""
   )
 corpus <- VCorpus(
@@ -53,33 +53,33 @@ corpus <- tm_map(corpus, removeWords, stoplist)
 corpus <- tm_map(corpus, stripWhitespace)
 
 
-remove_char <- content_transformer(
+removeChar <- content_transformer(
   function(x, pattern, replacement) 
   gsub(pattern, replacement, x)
   )
 
-#usuniêcie "em dash" i 3/4 z tekstów
-corpus <- tm_map(corpus, remove_char, intToUtf8(8722), "")
-corpus <- tm_map(corpus, remove_char, intToUtf8(190), "")
+#usuni?cie "em dash" i 3/4 z tekst?w
+corpus <- tm_map(corpus, removeChar, intToUtf8(8722), "")
+corpus <- tm_map(corpus, removeChar, intToUtf8(190), "")
 
 #lematyzacja - sprowadzenie do formy podstawowej
 polish <- dictionary (lang = "pl_PL")
 
 lemmatize <- function(text) {
-  simple_text <- str_trim(as.character(text[1]))
-  parsed_text <- strsplit(simple_text, split = " ")
-  new_text_vec <- hunspell_stem(parsed_text[[1]], dict = polish)
-  for (i in 1:length(new_text_vec)){
-    if (length(new_text_vec[[i]]) == 0) new_text_vec[i] <- parsed_text[[1]][i]
-    if (length(new_text_vec[[i]]) > 1) new_text_vec[i] <- new_text_vec[[i]][1] 
+  simpleText <- str_trim(as.character(text[1]))
+  parsedText <- strsplit(simpleText, split = " ")
+  new_text_vec <- hunspell_stem(parsedText[[1]], dict = polish)
+  for (i in 1:length(newTextVec)){
+    if (length(newTextVec[[i]]) == 0) newTextVec[i] <- parsedText[[1]][i]
+    if (length(newTextVec[[i]]) > 1) newTextVec[i] <- newTextVec[[i]][1] 
   }
-  new_text <- paste(new_text_vec, collapse = " ")
-  return(new_text)
+  newText <- paste(newTextVec, collapse = " ")
+  return(newText)
 }
 
 corpus <- tm_map(corpus, content_transformer(lemmatize))
 
-#usuniêcie rozszerzeñ z nazw dokumentów
+#usuni?cie rozszerze? z nazw dokument?w
 cut_exstensions <- function(document){
   meta(document, "id") <- gsub(pattern = "\\.txt$", "",meta(document, "id"))
   return(document)
@@ -87,7 +87,7 @@ cut_exstensions <- function(document){
 
 corpus <- tm_map(corpus, cut_exstensions)
 
-#eksport korpusu przetworzonego do plików tekstowych
+#eksport korpusu przetworzonego do plik?w tekstowych
 preprocessed_dir <- paste(
   ouputDir,
   "\\",
