@@ -2,7 +2,7 @@
 library(tm)
 
 #zmiana katalogu roboczego
-workDir <- "F:\\KW\\TextMining12S"
+workDir <- "C:\\Users\\BartekO\\PJN\\TextMining"
 setwd(workDir)
 
 #definicja katalogów projektu
